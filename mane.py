@@ -41,6 +41,6 @@ async def mes_answer(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "Помощь Админа ☎")
 async def mes_answer(message: types.Message):
-    await message.reply("Запрос отправлен. Ожидайте....")
+    await message.reply("Запрос отправлен. Ожидайте...")
 if __name__ == "__main__":
     executor.start_polling(dp)
