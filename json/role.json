@@ -1,0 +1,23 @@
+{
+	"Admin": [
+		{
+			"setrole": true,
+			"check": true,
+			"mailing": true
+		}	
+	],
+	"Moderator": [
+		{
+			"setrole": false,
+			"check": true,
+			"mailing": true
+		}
+	],
+	"user": [
+		{
+			"setrole": false,
+			"check": false,
+			"mailing": true
+		}
+	]
+}
