@@ -27,7 +27,7 @@ class Db:
 
     def insert_message(self, id, text, question):
         self.cur.execute(
-            """INSERT INTO message (id, text, question) VALUE (%s, %s, %s)"""
+            """INSERT INTO message (id, text, question) VALUES (%s, %s, %s)"""
             , (id, text, question))
         return True
 
