@@ -45,8 +45,10 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
     bk_reg = ReplyKeyboardMarkup(resize_keyboard=True).add(inline_btn_tel)
     await chatbot.send_message(callback_query.from_user.id, f"Ваш Логин: {callback_query.from_user.id}")
     await chatbot.send_message(callback_query.from_user.id, "Если хотите чтобы вам перезвонили, ответили на вопрос подтвердите свой номер телефона", reply_markup=bk_reg)
-    for i in range(1, 4):
-        all_qst = ReplyKeyboardMarkup(row_width=1).add(InlineKeyboardButton(jsone.get_question_json().len(keys)))
+    all_qst = ReplyKeyboardMarkup(row_width=1)
+    for i in range(0, len(jsone.get_question_json().keys())):
+        button = types.KeyboardButton(f'{list(jsone.get_question_json().keys())[i]}')
+        all_qst.add(button)
     await chatbot.send_message(callback_query.from_user.id, "Список популярных вопросов:", reply_markup=all_qst)
 
 @dp.message_handler(lambda message: message.text == "Помощь модератора ☎")
