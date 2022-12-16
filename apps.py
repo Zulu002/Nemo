@@ -19,20 +19,24 @@ try:
         )
         print(f"Server version: {cursor.fetchone()}")
 
-    with connection.cursor() as cursor:
-        cursor.execute(
-            """INSERT INTO users (login, password, email, role) VALUES
-            ('DianaNice', '12345', 'hlinakcurbag', 'role1');"""
-        )
 
-        print("data in baza!")
 
     with connection.cursor() as cursor:
+        def reg(login, password, email):
+            cursor.execute(
+                f"""INSERT INTO users (login, password, email) VALUES
+                ('{login}', '{password}', '{email}');"""
+            )
+            return True
+        print(reg('dsada', 'daas', 'yhyhyhyh'))
+
+    with connection.cursor() as cursor:
         cursor.execute(
-            """SELECT * FROM users; """
+            """SELECT * FROM users;"""
         )
 
-        print(cursor.fetchone())
+        a = cursor.fetchone()
+        print(a)
 
 except Exception as ex:
     print("it's not work!", ex)
