@@ -21,23 +21,6 @@ try:
 
 
 
-    with connection.cursor() as cursor:
-        def reg(login, password, email):
-            cursor.execute(
-                f"""INSERT INTO users (login, password, email) VALUES
-                ('{login}', '{password}', '{email}');"""
-            )
-            return True
-        print(reg('dsada', 'daas', 'yhyhyhyh'))
-
-    with connection.cursor() as cursor:
-        cursor.execute(
-            """SELECT * FROM users;"""
-        )
-
-        a = cursor.fetchone()
-        print(a)
-
 except Exception as ex:
     print("it's not work!", ex)
 finally:

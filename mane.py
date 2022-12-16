@@ -16,20 +16,31 @@ dp = Dispatcher(chatbot)
 async def start_message(message: types.Message):
     inline_btn_hello = InlineKeyboardButton('Привет 👋', callback_data='button1')
     inline_kb1 = InlineKeyboardMarkup().add(inline_btn_hello)
-    await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.", reply_markup=inline_kb1)
+    await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.\n"
+                        "Так же ты можешь зарегистрироваться.", reply_markup=inline_kb1)
 
 @dp.message_handler(commands=["help"])
 async def help_message(message: types.Message):
     await message.reply("Перечень команд для твоей помощи...\n"
                         "/start - Начало бота. Приветствие. 1️⃣\n"
                         "/help - помощь по командам. 2️⃣\n"
-                        "/communicaton - общение с модераторами. 3️⃣")
+                        "/communicaton - общение с модераторами. 3️⃣\n"
+                        "/registry - регистрация 4️⃣")
 @dp.message_handler(commands=["communication"])
 async def mes_communication(message: types.Message):
     button_moder = KeyboardButton("Помощь модератора ☎")
     button_admin = KeyboardButton("Помощь Админа ☎")
     all_button = ReplyKeyboardMarkup(resize_keyboard=True).add(button_moder, button_admin)
     await message.reply("Режим общения включен.", reply_markup=all_button)
+
+@dp.message_handler(commands=["registry"])
+async def mes_registry(message: types.Message):
+    inline_btn_tel = KeyboardButton('Подтвердите ваш номер телефона ☎', request_contact=True)
+    inline_kb2 = ReplyKeyboardMarkup(resize_keyboard=True).add(inline_btn_tel)
+    await message.reply("Привет ты выбрал регистрацию\n"
+                        "Заполняй анкету.\n"
+                        "Если хотите чтобы вам перезвонили, ответили на вопрос подтвердите свой номер телефона", reply = False, reply_markup=inline_kb2)
+    await message.reply(f"Ваш уникальный login: {message.from_user.id}")
 
 @dp.callback_query_handler(lambda c: c.data == 'button1')
 async def process_callback_button1(callback_query: types.CallbackQuery):
@@ -42,5 +53,10 @@ async def mes_answer(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Помощь Админа ☎")
 async def mes_answer(message: types.Message):
     await message.reply("Запрос отправлен. Ожидайте...")
+
+@dp.message_handler(content_types=["text"])
+async def mess_text(message: types.Message):
+    await message.reply(message.text)
+
 if __name__ == "__main__":
     executor.start_polling(dp)
