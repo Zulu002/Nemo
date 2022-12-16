@@ -1,4 +1,4 @@
-"""Дальше бога нет.....
+"""Дальше бога нет.
    ссылка на бота -> http://t.me/ndflDok_bot"""
 
 from aiogram import Bot, types
