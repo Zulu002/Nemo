@@ -51,6 +51,10 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
         all_qst.add(button)
     await chatbot.send_message(callback_query.from_user.id, "Список популярных вопросов:", reply_markup=all_qst)
 
+@dp.message_handler(lambda message: message.text in list(jsone.get_question_json().keys()))
+async def answer_qst(message: types.Message):
+    await message.reply(jsone.get_question_json().get(message.text))
+
 @dp.message_handler(lambda message: message.text == "Помощь модератора ☎")
 async def mes_answer(message: types.Message):
     await message.reply("Запрос отправлен. Ожидайте....")
