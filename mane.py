@@ -6,6 +6,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.types import BotCommand, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.dispatcher.filters import Text
+import jsone
 
 TOKEN = "5614187069:AAFxZNIR2tNpFLFWQ2IirgubkPBQNQzLMos"
 chatbot = Bot(token=TOKEN)
@@ -15,7 +16,8 @@ dp = Dispatcher(chatbot)
 @dp.message_handler(commands=["start"])
 async def start_message(message: types.Message):
     inline_btn_hello = InlineKeyboardButton('Привет 👋', callback_data='button1')
-    inline_kb1 = InlineKeyboardMarkup().add(inline_btn_hello)
+    inline_btn_reg = InlineKeyboardButton("Регистрация", callback_data="button2")
+    inline_kb1 = InlineKeyboardMarkup().add(inline_btn_hello, inline_btn_reg)
     await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.\n"
                         "Так же ты можешь зарегистрироваться.", reply_markup=inline_kb1)
 
@@ -33,18 +35,19 @@ async def mes_communication(message: types.Message):
     all_button = ReplyKeyboardMarkup(resize_keyboard=True).add(button_moder, button_admin)
     await message.reply("Режим общения включен.", reply_markup=all_button)
 
-@dp.message_handler(commands=["registry"])
-async def mes_registry(message: types.Message):
-    inline_btn_tel = KeyboardButton('Подтвердите ваш номер телефона ☎', request_contact=True)
-    inline_kb2 = ReplyKeyboardMarkup(resize_keyboard=True).add(inline_btn_tel)
-    await message.reply("Привет ты выбрал регистрацию\n"
-                        "Заполняй анкету.\n"
-                        "Если хотите чтобы вам перезвонили, ответили на вопрос подтвердите свой номер телефона", reply = False, reply_markup=inline_kb2)
-    await message.reply(f"Ваш уникальный login: {message.from_user.id}")
-
 @dp.callback_query_handler(lambda c: c.data == 'button1')
 async def process_callback_button1(callback_query: types.CallbackQuery):
     await chatbot.send_message(callback_query.from_user.id, 'Привет 👋')
+
+@dp.callback_query_handler(lambda c: c.data == 'button2')
+async def process_callback_button1(callback_query: types.CallbackQuery):
+    inline_btn_tel = KeyboardButton('Подтвердите ваш номер телефона ☎', request_contact=True)
+    bk_reg = ReplyKeyboardMarkup(resize_keyboard=True).add(inline_btn_tel)
+    await chatbot.send_message(callback_query.from_user.id, f"Ваш Логин: {callback_query.from_user.id}")
+    await chatbot.send_message(callback_query.from_user.id, "Если хотите чтобы вам перезвонили, ответили на вопрос подтвердите свой номер телефона", reply_markup=bk_reg)
+    for i in range(1, 4):
+        all_qst = ReplyKeyboardMarkup(row_width=1).add(InlineKeyboardButton(jsone.get_question_json().len(keys)))
+    await chatbot.send_message(callback_query.from_user.id, "Список популярных вопросов:", reply_markup=all_qst)
 
 @dp.message_handler(lambda message: message.text == "Помощь модератора ☎")
 async def mes_answer(message: types.Message):
