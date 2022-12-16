@@ -2,29 +2,41 @@ import psycopg2
 import config as cf
 from psycopg2 import Error
 
-class Database:
-    def __init__(self):
-        self.connection = psycopg2.connect(
-            user=cf.USER,
-            password=cf.PASSWORD,
-            host=cf.HOST,
-            port=cf.PORT,
-            database=cf.DB_NAME
+
+try:
+    connection = psycopg2.connect(
+        host=cf.HOST,
+        user=cf.USER,
+        password=cf.PASSWORD,
+        port=cf.PORT,
+        database=cf.DB_NAME
+    )
+    connection.autocommit = True
+
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT version();"
         )
-        self.cursor = self.connection.cursor()
+        print(f"Server version: {cursor.fetchone()}")
 
-    def registerUser(self, time: str, text: str, id: int):
-        self.cursor.execute("INSERT INTO users (id, time, text) VALUES  (%s, %s, %s)",
-                            (time, text, id))
-        self.connection.commit()
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """INSERT INTO users (login, password, email, role) VALUES
+            ('DianaNice', '12345', 'hlinakcurbag', 'role1');"""
+        )
 
-    def getUsers(self):
-        self.cursor.execute("SELECT * FROM users")
-        return self.cursor.fetchall()
+        print("data in baza!")
 
-    def getUser(self, id: int):
-        self.cursor.execute(f"SELECT * FROM users WHERE id={id}")
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """SELECT * FROM users; """
+        )
 
+        print(cursor.fetchone())
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.connection.close()
+except Exception as ex:
+    print("it's not work!", ex)
+finally:
+    if connection:
+        connection.close()
+        print("connect close!")
