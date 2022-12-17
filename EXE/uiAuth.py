@@ -1,4 +1,4 @@
-
+import threading
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -7,6 +7,7 @@ import uiChat
 from EXE import api
 
 import easygui as e
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -48,18 +49,23 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Логин"))
         self.label_2.setText(_translate("MainWindow", "Пароль"))
         self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit.text(), self.lineEdit_2.text()))
-
 class ButtonCommand:
     def __init__(self):
         pass
 
     def push_go(self, *args):
+        result = api.API().auth(args[0], args[1])
+        if result:
 
-        if api.API().auth(args[0], args[1]):
+
+            uiChat.user_data = result
             MainWindow.close()
             ui = uiChat.Ui_MainWindow()
             ui.setupUi(MainWindow)
+
             MainWindow.show()
+
+
         else:
             e.msgbox("Ошибка авторизации", "Ошибка")
 

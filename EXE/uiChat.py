@@ -1,9 +1,15 @@
-
+import time
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+global user_data
+import api
+import threading
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.to = None
+
         MainWindow.setObjectName("ЯОператор")
         MainWindow.resize(530, 247)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -41,11 +47,28 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "ЯОператор: Поддержка 1.0"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "ЯОператор: Поддержка 1.0 ({0})".format(user_data['login'])))
         self.pushButton.setText(_translate("MainWindow", "Отправить"))
         self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit.text(), self.textBrowser))
-        self.listWidget.addItem("akdjcsjdbvc")
 
+
+        for i in api.API().get_now_answer():
+            self.listWidget.addItem(str(i['id']))
+        self.listWidget.currentRowChanged.connect(self.setToRow)
+
+    def setToRow(self, alpha):
+        self.to = self.listWidget.item(alpha).text()
+        self.update_chat()
+    def update_chat(self):
+            if self.to is not None:
+                print(self.to)
+                self.textBrowser.clear()
+                data = api.API().get_user_message(self.to)
+                #print(data, '213213213')
+                string_msg = ''
+                for i in data:
+                    string_msg = "({}) {}: {}".format(i["datetime"], i['id'], i['question'])
+                    ButtonCommand().push_go(string_msg, self.textBrowser)
 
 
 class ButtonCommand:
@@ -54,6 +77,9 @@ class ButtonCommand:
 
     def push_go(self, text, wordarea):
         wordarea.append(text)
+
+    def set_user(self, *args):
+        print(args)
 
 
 
