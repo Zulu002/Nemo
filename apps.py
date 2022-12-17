@@ -49,11 +49,31 @@ class Db:
             """UPDATE users SET phone=%s WHERE id=%s, site=%s;""",
             (phone, id, site,)
         )
-        return True
+        return phone
 
+    # вывод информации по нужной из таблиц
+    def select_all_users(self):
+        self.cur.execute("""
+            SELECT * FROM users""")
+        return self.cur.fetchall()
+
+
+    def select_all_members(self):
+        self.cur.execute("""
+            SELECT * FROM members""")
+        return self.cur.fetchall()
+
+
+    def select_all_message(self):
+        self.cur.execute("""
+            SELECT * FROM message""")
+        return self.cur.fetchall()
 
 # Db().insert_user(id='13fsa32', phone=None, site='vk')
 # Db().insert_members(12, '12345', 'admin')
 # Db().insert_message(11, 'help')
 # Db().delete_user(id=912824014)
-Db().update_user(phone='1231131', id='13fsa32', site='vk')
+# print(Db().select_all_members())
+# print(Db().select_all_message())
+# print(Db().select_all_users())
+Db().update_user('87878777', '1332', 'vk')
