@@ -15,27 +15,25 @@ class Db:
         self.cur = self.connection.cursor()
 
     def insert_user(self, id, phone, site):
-
         self.cur.execute(
-            """INSERT INTO users (id, phone, site) VALUES (%s, %s, %s);"""
-            , (id, phone, site,)
+            """INSERT INTO users (id, phone, site) VALUES (%s, %s, %s);""",
+            (id, phone, site,)
         )
         return True
 
     def insert_members(self, id, password, role):
         self.cur.execute(
-            """INSERT INTO members (id, password, role) VALUES (%s, %s, %s);"""
-            , (id, password, role,)
+            """INSERT INTO members (id, password, role) VALUES (%s, %s, %s);""",
+            (id, password, role,)
         )
         return True
 
     def insert_message(self, id, question):
         self.cur.execute(
-            """INSERT INTO message (id, question) VALUES (%s, %s);"""
-            , (id, question,)
+            """INSERT INTO message (id, question) VALUES (%s, %s);""",
+            (id, question,)
         )
         return True
-
 
     # Здесь мы можем удалить информацию о пользователе/админах/сообщениях от пользователя
     def delete_user(self, id):
@@ -45,9 +43,17 @@ class Db:
         )
         return True
 
+    # Здесь мы добавляем информацию
+    def update_user(self, phone, id, site):
+        self.cur.execute(
+            """UPDATE users SET phone=%s WHERE id=%s, site=%s;""",
+            (phone, id, site,)
+        )
+        return True
 
 
-Db().insert_user(id='13fsa32', phone=None, site='vk')
+# Db().insert_user(id='13fsa32', phone=None, site='vk')
 # Db().insert_members(12, '12345', 'admin')
 # Db().insert_message(11, 'help')
 # Db().delete_user(id=912824014)
+Db().update_user(phone='1231131', id='13fsa32', site='vk')
