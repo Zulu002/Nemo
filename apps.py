@@ -1,6 +1,6 @@
 import psycopg2
 
-from config import config as setting
+import config as setting
 
 
 class Db:
