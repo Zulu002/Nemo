@@ -15,6 +15,8 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.types import BotCommand, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, \
     InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.dispatcher.filters import Text
+import top_question
 
 
 storage = MemoryStorage()
@@ -38,35 +40,18 @@ async def start_message(message: types.Message):
     await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.\n"
                         "Так же ты можешь зарегистрироваться.", reply_markup=inline_kb1)
 
-@dp.message_handler(commands=["adminpanel"])
-async def admin_comm(message: types.Message):
-    await message.reply("Приветствую это админ панель, здесь ты можешь использовать инструменты для работать с данными."
-                        "А также изменять чужие данные.")
-    button_1 = KeyboardButton("Вывод id всех пользователей.")
-    button_2 = KeyboardButton("Поменять номер телефона")
-    button_3 = KeyboardButton("000000")
-    button_4 = KeyboardButton("------")
-    button_2 = KeyboardButton("++++++")
-    button_all_qst = ReplyKeyboardMarkup(row_width=1).add(button_1, button_2, button_3, button_4)
-    await message.reply("Команды для управления.", reply_markup=button_all_qst)
-
-
-
 
 @dp.message_handler(commands=["help"])
 async def help_message(message: types.Message):
     await message.reply("Перечень команд для твоей помощи...\n"
                         "/start - Начало бота. Приветствие. 1️⃣\n"
                         "/help - помощь по командам. 2️⃣\n"
-                        "/communicaton - общение с модераторами. 3️⃣\n"
-                        "/registry - регистрация 4️⃣")
-
+                        "/communicaton - общение с оператором. 3️⃣\n")
 
 @dp.message_handler(commands=["communication"])
 async def mes_communication(message: types.Message):
-    button_moder = KeyboardButton("Помощь модератора ☎")
-    button_admin = KeyboardButton("Помощь Админа ☎")
-    all_button = ReplyKeyboardMarkup(resize_keyboard=True).add(button_moder, button_admin)
+    button_moder = KeyboardButton("Помощь оператора")
+    all_button = ReplyKeyboardMarkup(resize_keyboard=True).add(button_moder)
     await message.reply("Режим общения включен.", reply_markup=all_button)
 
 
@@ -85,7 +70,6 @@ async def get_username(message: types.Message, state: FSMContext):
     a = datetime.datetime.now()
     apps.Db().insert_message(message.from_user.id, message.text, str(a))
     await message.answer("Отлично! Ваш запрос был сохранен!")
-
 @dp.callback_query_handler(lambda c: c.data == 'button2')
 async def process_callback_button1(callback_query: types.CallbackQuery):
 
@@ -112,17 +96,18 @@ async def mes_phone(message: types.Message):
 async def answer_qst(message: types.Message):
     await message.reply(jsone.get_question_json().get(message.text))
 
+@dp.message_handler(lambda message: message.text == "Помощь оператора")
+async def mes_text(message: types.Message):
+    await message.reply("Сейчас к вам подключится оператор.\nОжидайте.....")
 
-@dp.message_handler(lambda message: message.text == "Помощь модератора ☎")
-async def mes_answer(message: types.Message):
-    await message.reply("Запрос отправлен. Ожидайте....")
 
-@dp.message_handler(lambda message: message.text == "Подтвердите ваш номер телефона ☎")
+@dp.message_handler(lambda message: message.text == "Я не нашел ответ на свой вопрос...")
 async def mes_answer(message: types.Message):
-    await message.reply("SSS")
-@dp.message_handler(lambda message: message.text == "Помощь Админа ☎")
-async def mes_answer(message: types.Message):
-    await message.reply("Запрос отправлен. Ожидайте...")
+    await message.reply("Вам скоро поможет оператор :)")
+
+@dp.message_handler(lambda message: message.text)
+async def mes_fast(message: types.Message):
+    await message.reply("Скоро оператор вам поможет. Ожидайте..")
 
 if __name__ == "__main__":
     executor.start_polling(dp)
