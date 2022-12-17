@@ -8,10 +8,10 @@ from aiogram.types import BotCommand, ReplyKeyboardMarkup, ReplyKeyboardRemove, 
     InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.dispatcher.filters import Text
 import jsone
-import config
 import apps
 
-chatbot = Bot(token=config.TOKEN)
+TOKEN = "5614187069:AAFxZNIR2tNpFLFWQ2IirgubkPBQNQzLMos"
+chatbot = Bot(token=TOKEN)
 dp = Dispatcher(chatbot)
 
 '''Начало бота - команда start.'''
@@ -25,6 +25,20 @@ async def start_message(message: types.Message):
     inline_kb1 = InlineKeyboardMarkup().add(inline_btn_hello, inline_btn_reg, inline_btn_qst)
     await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.\n"
                         "Так же ты можешь зарегистрироваться.", reply_markup=inline_kb1)
+
+@dp.message_handler(commands=["adminpanel"])
+async def admin_comm(message: types.Message):
+    await message.reply("Приветствую это админ панель, здесь ты можешь использовать инструменты для работать с данными."
+                        "А также изменять чужие данные.")
+    button_1 = KeyboardButton("Вывод id всех пользователей.")
+    button_2 = KeyboardButton("Поменять номер телефона")
+    button_3 = KeyboardButton("000000")
+    button_4 = KeyboardButton("------")
+    button_2 = KeyboardButton("++++++")
+    button_all_qst = ReplyKeyboardMarkup(row_width=1).add(button_1, button_2, button_3, button_4)
+    await message.reply("Команды для управления.", reply_markup=button_all_qst)
+
+
 
 
 @dp.message_handler(commands=["help"])
@@ -83,7 +97,7 @@ async def answer_qst(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "Помощь модератора ☎")
 async def mes_answer(message: types.Message):
-    await message.reply("Запрос отправлен. Ожидайте....")
+    await message.reply("Запрос отправлен. Ожидайте...")
 
 @dp.message_handler(lambda message: message.text == "Подтвердите ваш номер телефона ☎")
 async def mes_answer(message: types.Message):
