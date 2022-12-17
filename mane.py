@@ -18,6 +18,8 @@ from aiogram.types import BotCommand, ReplyKeyboardMarkup, ReplyKeyboardRemove, 
 from aiogram.dispatcher.filters import Text
 import top_question
 
+import decryp
+import encrypt
 
 storage = MemoryStorage()
 
