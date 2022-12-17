@@ -9,7 +9,6 @@ from aiogram.types import BotCommand, ReplyKeyboardMarkup, ReplyKeyboardRemove, 
 from aiogram.dispatcher.filters import Text
 import jsone
 import apps
-import sqlite3
 
 TOKEN = "5614187069:AAFxZNIR2tNpFLFWQ2IirgubkPBQNQzLMos"
 chatbot = Bot(token=TOKEN)
@@ -22,9 +21,24 @@ dp = Dispatcher(chatbot)
 async def start_message(message: types.Message):
     inline_btn_hello = InlineKeyboardButton('Привет 👋', callback_data='button1')
     inline_btn_reg = InlineKeyboardButton("Регистрация", callback_data="button2")
-    inline_kb1 = InlineKeyboardMarkup().add(inline_btn_hello, inline_btn_reg)
+    inline_btn_qst = InlineKeyboardButton("Оставить вопрос", callback_data="button3")
+    inline_kb1 = InlineKeyboardMarkup().add(inline_btn_hello, inline_btn_reg, inline_btn_qst)
     await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.\n"
                         "Так же ты можешь зарегистрироваться.", reply_markup=inline_kb1)
+
+@dp.message_handler(commands=["adminpanel"])
+async def admin_comm(message: types.Message):
+    await message.reply("Приветствую это админ панель, здесь ты можешь использовать инструменты для работать с данными."
+                        "А также изменять чужие данные.")
+    button_1 = KeyboardButton("Вывод id всех пользователей.")
+    button_2 = KeyboardButton("Поменять номер телефона")
+    button_3 = KeyboardButton("000000")
+    button_4 = KeyboardButton("------")
+    button_2 = KeyboardButton("++++++")
+    button_all_qst = ReplyKeyboardMarkup(row_width=1).add(button_1, button_2, button_3, button_4)
+    await message.reply("Команды для управления.", reply_markup=button_all_qst)
+
+
 
 
 @dp.message_handler(commands=["help"])
@@ -48,7 +62,13 @@ async def mes_communication(message: types.Message):
 async def process_callback_button1(callback_query: types.CallbackQuery):
     await chatbot.send_message(callback_query.from_user.id, 'Привет 👋')
 
+@dp.callback_query_handler(lambda c: c.data == "button3")
+async def qst_answer(callback_query: types.CallbackQuery):
+    await chatbot.send_message(callback_query.from_user.id, "Можете оставить свой вопрос!")
 
+    @dp.message_handler(content_types=["text"])
+    async def mess_text(message: types.Message):
+        await message.reply(message.text)
 @dp.callback_query_handler(lambda c: c.data == 'button2')
 async def process_callback_button1(callback_query: types.CallbackQuery):
 
@@ -85,12 +105,6 @@ async def mes_answer(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Помощь Админа ☎")
 async def mes_answer(message: types.Message):
     await message.reply("Запрос отправлен. Ожидайте...")
-
-
-@dp.message_handler(content_types=["text"])
-async def mess_text(message: types.Message):
-    await message.reply(message.text)
-
 
 if __name__ == "__main__":
     executor.start_polling(dp)
