@@ -15,7 +15,6 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.types import BotCommand, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, \
     InlineKeyboardButton, InlineKeyboardMarkup
-from aiogram.dispatcher.filters import Text
 
 
 storage = MemoryStorage()
