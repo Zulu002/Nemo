@@ -30,7 +30,7 @@ class Db:
 
     def insert_message(self, id, question, datetime):
         self.cur.execute(
-            """INSERT INTO message (id, question) VALUES (%s, %s, %s);""",
+            """INSERT INTO message (id, question, datetime) VALUES (%s, %s, %s);""",
             (id, question, datetime)
         )
         return True
@@ -41,7 +41,6 @@ class Db:
             (idMembers, idUser, text, datetime,)
         )
         return True
-
 
     # Здесь мы можем удалить информацию о пользователе/админах/сообщениях от пользователя
     def delete_user(self, id):
@@ -71,7 +70,6 @@ class Db:
             (idMembers,)
         )
         return True
-
 
     # вывод информации по нужной из таблиц
     def select_all_users(self):
