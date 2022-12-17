@@ -7,7 +7,7 @@
 			"mailing": true
 		}	
 	],
-	"Moderator": [
+	"Operator": [
 		{
 			"setrole": false,
 			"op": true,
