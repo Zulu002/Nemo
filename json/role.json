@@ -2,21 +2,24 @@
 	"Admin": [
 		{
 			"setrole": true,
-			"check": true,
+			"op": true,
+			"panel": true,
 			"mailing": true
 		}	
 	],
 	"Moderator": [
 		{
 			"setrole": false,
-			"check": true,
+			"op": true,
+			"panel": true,
 			"mailing": true
 		}
 	],
 	"user": [
 		{
 			"setrole": false,
-			"check": false,
+			"op": false,
+			"panel": false,
 			"mailing": true
 		}
 	]
