@@ -43,7 +43,6 @@ class Db:
         return True
 
 
-
     # Здесь мы можем удалить информацию о пользователе/админах/сообщениях от пользователя
     def delete_user(self, id):
         self.cur.execute(
