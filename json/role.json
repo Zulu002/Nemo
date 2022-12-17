@@ -3,24 +3,28 @@
 		{
 			"setrole": true,
 			"op": true,
-			"panel": true,
-			"mailing": true
-		}	
+			"panel": true
+		}
+	],
+	"Moderator": [
+		{
+			"setrole": false,
+			"op": true,
+			"panel": true
+		}
 	],
 	"Operator": [
 		{
 			"setrole": false,
 			"op": true,
-			"panel": true,
-			"mailing": true
+			"panel": false
 		}
 	],
 	"user": [
 		{
 			"setrole": false,
 			"op": false,
-			"panel": false,
-			"mailing": true
+			"panel": false
 		}
 	]
 }
