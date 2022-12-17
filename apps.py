@@ -30,10 +30,10 @@ class Db:
         )
         return True
 
-    def insert_message(self, id, question, datetime, status):
+    def insert_message(self, id, question, datetime):
         self.cur.execute(
-            """INSERT INTO message (id, question, datetime, status) VALUES (%s, %s, %s, %s);""",
-            (id, question, datetime, status)
+            """INSERT INTO message (id, question, datetime) VALUES (%s, %s, %s);""",
+            (id, question, datetime)
         )
         return True
 
@@ -114,4 +114,3 @@ class Db:
         else:
             return True
 
-print(Db().select_member('divan', 'ererere'))

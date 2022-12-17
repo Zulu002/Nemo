@@ -50,15 +50,15 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Имя"))
         self.label_2.setText(_translate("MainWindow", "Логин"))
         self.label_3.setText(_translate("MainWindow", "Пароль"))
-        self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit.text()))
+        self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit_3.text(), self.lineEdit.text(), self.lineEdit_2.text()))
 
 
 class ButtonCommand:
     def __init__(self):
         pass
 
-    def push_go(self, text):
-            print(text)
+    def push_go(self, *args):
+            print(args)
 
 
 
