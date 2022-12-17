@@ -13,6 +13,7 @@ class Db:
         self.connection.autocommit = True
         self.cur = self.connection.cursor()
 
+
     # Здесь мы передаём информацию о пользователе/админах/сообщениях от пользователя
     def insert_user(self, id, phone, site):
         self.cur.execute(
