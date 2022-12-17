@@ -97,7 +97,7 @@ async def answer_qst(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "Помощь модератора ☎")
 async def mes_answer(message: types.Message):
-    await message.reply("Запрос отправлен. Ожидайте....")
+    await message.reply("Запрос отправлен. Ожидайте...")
 
 @dp.message_handler(lambda message: message.text == "Подтвердите ваш номер телефона ☎")
 async def mes_answer(message: types.Message):
