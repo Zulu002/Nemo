@@ -106,15 +106,3 @@ class Db:
             """SELECT * FROM message_from_members"""
         )
         return self.cur.fetchall()
-
-    # def update_users(self, id, phone, site):
-    #     self.cur.execute("UPDATE public.users SET id =?, phone =?, site =? WHERE ;")
-
-# Db().insert_user(id='13fsa32', phone=None, site='vk')
-# Db().insert_members(12, '12345', 'admin')
-# Db().insert_message(11, 'help')
-# Db().delete_user(id=912824014)
-# print(Db().select_all_members())
-# print(Db().select_all_message())
-# print(Db().select_all_users())
-# Db().update_user('87878777', '1332', 'vk')
