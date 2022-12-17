@@ -4,7 +4,6 @@ import config as setting
 
 
 class Db:
-    # Здесь мы передаём информацию о пользователе/админах/сообщениях от пользователя
     def __init__(self):
         self.connection = psycopg2.connect(user=setting.USER,
                                            password=setting.PASSWORD,
@@ -14,6 +13,7 @@ class Db:
         self.connection.autocommit = True
         self.cur = self.connection.cursor()
 
+    # Здесь мы передаём информацию о пользователе/админах/сообщениях от пользователя
     def insert_user(self, id, phone, site):
         self.cur.execute(
             """INSERT INTO users (id, phone, site) VALUES (%s, %s, %s);""",
@@ -28,12 +28,20 @@ class Db:
         )
         return True
 
-    def insert_message(self, id, question):
+    def insert_message(self, id, question, datetime):
         self.cur.execute(
-            """INSERT INTO message (id, question) VALUES (%s, %s);""",
-            (id, question,)
+            """INSERT INTO message (id, question, datetime) VALUES (%s, %s, %s);""",
+            (id, question, datetime)
         )
         return True
+
+    def insert_message_from_members(self, idMembers, idUser, text, datetime):
+        self.cur.execute(
+            """INSERT INTO messageFromMembers (idMembers, idUser, text, datetime) VALUES (%s, %s, %s, %s);""",
+            (idMembers, idUser, text, datetime,)
+        )
+        return True
+
 
     # Здесь мы можем удалить информацию о пользователе/админах/сообщениях от пользователя
     def delete_user(self, id):
@@ -43,37 +51,49 @@ class Db:
         )
         return True
 
-    # Здесь мы добавляем информацию
-    def update_user(self, phone, id, site):
+    def delete_members(self, id):
         self.cur.execute(
-            """UPDATE users SET phone=%s WHERE id=%s, site=%s;""",
-            (phone, id, site,)
+            """DELETE FROM members WHERE id=%s;""",
+            (id,)
         )
-        return phone
+        return True
+
+    def delete_message(self, id):
+        self.cur.execute(
+            """DELETE FROM message WHERE id=%s;""",
+            (id,)
+        )
+        return True
+
+    def delete_message_from_members(self, idMembers):
+        self.cur.execute(
+            """DELETE FROM messageFromMembers WHERE idMembers=%s;""",
+            (idMembers,)
+        )
+        return True
+
 
     # вывод информации по нужной из таблиц
     def select_all_users(self):
-        self.cur.execute("""
-            SELECT * FROM users""")
+        self.cur.execute(
+            """SELECT * FROM users"""
+        )
         return self.cur.fetchall()
-
 
     def select_all_members(self):
-        self.cur.execute("""
-            SELECT * FROM members""")
+        self.cur.execute(
+            """SELECT * FROM members"""
+        )
         return self.cur.fetchall()
-
 
     def select_all_message(self):
-        self.cur.execute("""
-            SELECT * FROM message""")
+        self.cur.execute(
+            """SELECT * FROM message"""
+        )
         return self.cur.fetchall()
 
-# Db().insert_user(id='13fsa32', phone=None, site='vk')
-# Db().insert_members(12, '12345', 'admin')
-# Db().insert_message(11, 'help')
-# Db().delete_user(id=912824014)
-# print(Db().select_all_members())
-# print(Db().select_all_message())
-# print(Db().select_all_users())
-Db().update_user('87878777', '1332', 'vk')
+    def select_all_message_from_members(self):
+        self.cur.execute(
+            """SELECT * FROM messageFromMembers"""
+        )
+        return self.cur.fetchall()
