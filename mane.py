@@ -8,10 +8,10 @@ from aiogram.types import BotCommand, ReplyKeyboardMarkup, ReplyKeyboardRemove, 
     InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.dispatcher.filters import Text
 import jsone
+import config
 import apps
 
-TOKEN = "5614187069:AAFxZNIR2tNpFLFWQ2IirgubkPBQNQzLMos"
-chatbot = Bot(token=TOKEN)
+chatbot = Bot(token=config.TOKEN)
 dp = Dispatcher(chatbot)
 
 '''Начало бота - команда start.'''
