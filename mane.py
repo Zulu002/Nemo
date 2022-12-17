@@ -100,14 +100,20 @@ async def answer_qst(message: types.Message):
 async def mes_text(message: types.Message):
     await message.reply("Сейчас к вам подключится оператор.\nОжидайте.....")
 
-
+@dp.message_handler(lambda message: message.text)
+async def mes_fast(message: types.Message):
+    key_1 = InlineKeyboardButton("Отменить", callback_data="but5")
+    cancel = InlineKeyboardMarkup().add(key_1)
+    await message.reply("Скоро оператор вам поможет. Ожидайте..", reply_markup=cancel)
 @dp.message_handler(lambda message: message.text == "Я не нашел ответ на свой вопрос...")
 async def mes_answer(message: types.Message):
     await message.reply("Вам скоро поможет оператор :)")
 
-@dp.message_handler(lambda message: message.text)
-async def mes_fast(message: types.Message):
-    await message.reply("Скоро оператор вам поможет. Ожидайте..")
+@dp.callback_query_handler(lambda c: c.data == 'but5')
+async def process_callback_button1(callback_query: types.CallbackQuery):
+    await chatbot.send_message(callback_query.from_user.id, "Вопрос отменен.")
+
+
 
 if __name__ == "__main__":
     executor.start_polling(dp)
