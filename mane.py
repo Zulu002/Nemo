@@ -58,7 +58,6 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
     await chatbot.send_message(callback_query.from_user.id,
                                "Если хотите чтобы вам перезвонили, ответили на вопрос подтвердите свой номер телефона",
                                reply_markup=bk_reg)
-    apps.Db().insert_user(callback_query.from_user.id, "asdasd", "Telegram")
 @dp.message_handler(commands=["task"])
 async def tasks(message: types.Message):
     all_qst = ReplyKeyboardMarkup(row_width=1)
@@ -67,6 +66,10 @@ async def tasks(message: types.Message):
         all_qst.add(button)
     await message.reply("Список популярных вопросов:", reply_markup=all_qst)
 
+@dp.message_handler(content_types=['contact'])
+async def mes_phone(message: types.Message):
+    if message.contact is not None:
+        apps.Db().insert_user(message.contact.user_id, message.contact.phone_number, "Telegram")
 @dp.message_handler(lambda message: message.text in list(jsone.get_question_json().keys()))
 async def answer_qst(message: types.Message):
     await message.reply(jsone.get_question_json().get(message.text))
