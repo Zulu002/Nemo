@@ -33,7 +33,7 @@ class Db:
     def insert_message(self, id_user, platform: str, status) -> bool:
         self.cur.execute(
             """INSERT INTO message (id, question, datetime, status) VALUES (%s, %s, %s, %s);""",
-            (id, question, datetime, )
+            (id, question, datetime, status)
         )
         return True
 
