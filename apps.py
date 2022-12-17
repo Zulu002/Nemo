@@ -16,10 +16,10 @@ class Db:
 
 
     # Здесь мы передаём информацию о пользователе/админах/сообщениях от пользователя
-    def insert_user(self, id, phone, site):
+    def insert_user(self, id_user, phone, site):
         self.cur.execute(
-            """INSERT INTO users (id, phone, site) VALUES (%s, %s, %s);""",
-            (id, phone, site,)
+            """INSERT INTO users (id_user, phone, site) VALUES (%s, %s, %s);""",
+            (id_user, phone, site,)
         )
         return True
 
