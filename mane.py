@@ -26,20 +26,6 @@ async def start_message(message: types.Message):
     await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.\n"
                         "Так же ты можешь зарегистрироваться.", reply_markup=inline_kb1)
 
-@dp.message_handler(commands=["adminpanel"])
-async def admin_comm(message: types.Message):
-    await message.reply("Приветствую это админ панель, здесь ты можешь использовать инструменты для работать с данными."
-                        "А также изменять чужие данные.")
-    button_1 = KeyboardButton("Вывод id всех пользователей.")
-    button_2 = KeyboardButton("Поменять номер телефона")
-    button_3 = KeyboardButton("000000")
-    button_4 = KeyboardButton("------")
-    button_2 = KeyboardButton("++++++")
-    button_all_qst = ReplyKeyboardMarkup(row_width=1).add(button_1, button_2, button_3, button_4)
-    await message.reply("Команды для управления.", reply_markup=button_all_qst)
-
-
-
 
 @dp.message_handler(commands=["help"])
 async def help_message(message: types.Message):
