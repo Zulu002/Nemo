@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 
 import config as setting
 
@@ -11,7 +12,7 @@ class Db:
                                            port=setting.PORT,
                                            database=setting.DB_NAME)
         self.connection.autocommit = True
-        self.cur = self.connection.cursor()
+        self.cur = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
     # Здесь мы передаём информацию о пользователе/админах/сообщениях от пользователя
@@ -29,17 +30,19 @@ class Db:
         )
         return True
 
-    def insert_message(self, id, question, datetime):
+    def insert_message(self, id_user, platform: str) -> dict:
+
+
         self.cur.execute(
             """INSERT INTO message (id, question, datetime) VALUES (%s, %s, %s);""",
-            (id, question, datetime)
+            (id, question, datetime,)
         )
         return True
 
-    def insert_message_from_members(self, idMembers, idUser, text, datetime):
+    def insert_message_from_members(self, id_members, id_user, text, datetime):
         self.cur.execute(
-            """INSERT INTO messageFromMembers (idMembers, idUser, text, datetime) VALUES (%s, %s, %s, %s);""",
-            (idMembers, idUser, text, datetime,)
+            """INSERT INTO message_from_members (id_members, id_user, text, datetime) VALUES (%s, %s, %s, %s);""",
+            (id_members, id_user, text, datetime,)
         )
         return True
 
@@ -66,13 +69,18 @@ class Db:
         )
         return True
 
-    def delete_message_from_members(self, idMembers):
+    def delete_message_from_members(self, id_members):
         self.cur.execute(
-            """DELETE FROM messageFromMembers WHERE idMembers=%s;""",
-            (idMembers,)
+            """DELETE FROM message_from_members WHERE id_members=%s;""",
+            (id_members,)
         )
         return True
 
+        # вывод информации по нужной из таблиц
+
+    def select_user_platform(self, platform, user_id):
+        self.cur.execute("""SELECT * FROM users WHERE site=%s AND id_user=%s""", (platform, user_id,))
+        return dict(self.cur.fetchone())
 
     # вывод информации по нужной из таблиц
     def select_all_users(self):
@@ -95,7 +103,7 @@ class Db:
 
     def select_all_message_from_members(self):
         self.cur.execute(
-            """SELECT * FROM messageFromMembers"""
+            """SELECT * FROM message_from_members"""
         )
         return self.cur.fetchall()
 
