@@ -3,7 +3,7 @@ from PyQt6 import QtCore, QtWidgets
 
 import api
 import uiChat
-import hashlib
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -61,8 +61,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.clicked.connect(lambda x: self.backToChat())
 
     def createNewUser(self, *args):
-        password_hash = hashlib.sha256(args[1].encode()).hexdigest()
-        api.API().new_user(args[0], password_hash, args[2])
+        api.API().new_user(args[0], args[1], args[2])
         easygui.msgbox("Новый пользователь создан в системе!", "Успешно")
 
     def backToChat(self):

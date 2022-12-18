@@ -4,8 +4,10 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 import uiChat
 
+from EXE import api
+
 import easygui as e
-import api
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
