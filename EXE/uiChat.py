@@ -58,6 +58,7 @@ class Ui_MainWindow(object):
             self.pushButton.setText(_translate("MainWindow", "Отправить"))
             self.pushButton_2.setText(_translate("MainWindow", "Добавить пользователя "))
             self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit.text(), self.textBrowser))
+            self.pushButton_2.clicked.connect(lambda x: ButtonCommand().set_user("trtrt"))
 
             for i in api.API().get_now_answer():
                 self.listWidget.addItem(str(i['id']))
