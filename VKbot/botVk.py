@@ -3,7 +3,8 @@ import vk_api
 # Достаём из неё longpoll
 from vk_api.longpoll import VkLongPoll, VkEventType
 import config
-
+import apps
+import datetime
 # Создаём переменную для удобства в которой хранится наш токен от группы
 
 token = config.token
@@ -31,30 +32,13 @@ for event in longpoll.listen():
             # Для того чтобы бот читал все с маленьких букв
             message = event.text.lower()
             # Получаем id пользователя
-            id = event.user_id
+            id = event.peer_id
 
             # Доисторическая логика общения на ифах
             # Перед вами структура сообщений на которые бот сможет ответить, elif можно создавать сколько угодно, if и else же могут быть только 1 в данной ситуации.
             # if - если, else - иначе(значит бот получил сообщение на которое не вызвана наша функция для ответа)
 
-            if message == 'привет':
-                blasthack(id, 'Привет, я бот!')
-
-            elif message == 'как дела?':
-                blasthack(id, 'Хорошо, а твои как?')
-
-            else:
-                blasthack(id, 'Я вас не понимаю! :(')
-
-# Слушаем longpoll(Сообщения)
-for event in longpoll.listen():
-    if event.type == VkEventType.MESSAGE_NEW:
-        # Чтобы наш бот не слышал и не отвечал на самого себя
-        if event.to_me:
-            if event.from_chat:
-
-                msg = event.text.lower()
-                id = event.chat_id
-
-                if msg == 'привет':
-                    chMsg('ewfwf')
+            if message:
+                blasthack(id, "Ваше сообщение было отправлено оператору!\nОжидайте ответа..")
+                a = datetime.datetime.now()
+                apps.Db().insert_message(id, message, a)
