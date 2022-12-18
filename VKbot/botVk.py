@@ -1,6 +1,5 @@
-# Импортируем библиотеку vk_api
-import vk_api
 # Достаём из неё longpoll
+import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 import config
 import apps
@@ -29,7 +28,7 @@ for event in longpoll.listen():
         if event.to_me:
 
             # Для того чтобы бот читал все с маленьких букв
-            message = event.text.lower()
+            message = event.text
             # Получаем id пользователя
             id = event.peer_id
 
@@ -40,4 +39,4 @@ for event in longpoll.listen():
             if message:
                 blasthack(id, "Ваше сообщение было отправлено оператору!\nОжидайте ответа..")
                 a = datetime.datetime.now()
-                apps.Db().insert_message(id, message, a)
+                apps.Db().insert_message(str(id), message, a, "Vk")
