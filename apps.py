@@ -114,3 +114,9 @@ class Db:
         else:
             return True
 
+
+    def update_close_quest(self, user_id):
+        self.cur.execute(
+            """UPDATE public.message SET status=true WHERE id=%s""", (str(user_id),)
+        )
+        return True

@@ -63,7 +63,7 @@ async def process_callback_button1(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda c: c.data == 'button3')
 async def process_callback_button1(callback_query: types.CallbackQuery):
-    await chatbot.send_message(callback_query.from_user.id, "Пиши свой вопрос, а я его отправлю в базу данных.")
+    await chatbot.send_message(callback_query.from_user.id, "Напиши ваш вопрос.")
     await UserState.question.set()
 
 
@@ -116,6 +116,7 @@ async def mes_text(message: types.Message):
 async def mes_fast(message: types.Message):
     key_1 = InlineKeyboardButton("Отменить", callback_data="but5")
     cancel = InlineKeyboardMarkup().add(key_1)
+    apps.Db().insert_message(message.from_user.id, message.text, datetime.datetime.now())
     await message.reply("Скоро оператор вам поможет. Ожидайте..", reply_markup=cancel)
 
 
@@ -126,6 +127,7 @@ async def mes_answer(message: types.Message):
 
 @dp.callback_query_handler(lambda c: c.data == 'but5')
 async def process_callback_button1(callback_query: types.CallbackQuery):
+    apps.Db().update_close_quest(callback_query.from_user.id)
     await chatbot.send_message(callback_query.from_user.id, "Вопрос отменен.")
 
 

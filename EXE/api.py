@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 
@@ -24,3 +26,7 @@ class API:
 
     def close_quest(self, user_id: str):
         return requests.put(self.adr + "/api/v1/answer/"+str(user_id))
+
+    def new_user(self, login: str, password: str, role):
+        data = {"login": login, "password": password, 'role': role}
+        return requests.post(self.adr + "/api/v1/auth/", data=json.dumps(data))

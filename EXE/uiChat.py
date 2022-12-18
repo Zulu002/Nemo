@@ -4,7 +4,6 @@ global user_data
 import api
 import threading
 import uiAdmin
-
 class Ui_MainWindow:
     def setupUi(self, MainWindow):
         self.MainWin = MainWindow
@@ -46,10 +45,11 @@ class Ui_MainWindow:
         self.pushButton_3.setMaximumSize(QtCore.QSize(250, 16777215))
         self.pushButton_3.setObjectName("pushButton_3")
         self.horizontalLayout_3.addWidget(self.pushButton_3)
-        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setMaximumSize(QtCore.QSize(250, 16777215))
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.horizontalLayout_3.addWidget(self.pushButton_4)
+        if user_data['role'] == 'admin':
+            self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+            self.pushButton_4.setMaximumSize(QtCore.QSize(250, 16777215))
+            self.pushButton_4.setObjectName("pushButton_4")
+            self.horizontalLayout_3.addWidget(self.pushButton_4)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -63,11 +63,13 @@ class Ui_MainWindow:
         self.pushButton.setText(_translate("MainWindow", "Отправить"))
         self.pushButton_2.setText(_translate("MainWindow", "закрыть вопрос"))
         self.pushButton_3.setText(_translate("MainWindow", "обновить пользователей"))
-        self.pushButton_4.setText(_translate("MainWindow", "добавить пользователей"))
+        if user_data['role'] == 'admin':
+            self.pushButton_4.setText(_translate("MainWindow", "добавить пользователей"))
         self.pushButton.clicked.connect(lambda x: self.push_go(self.lineEdit.text()))
         self.pushButton_2.clicked.connect(lambda x: self.close_quest())
         self.pushButton_3.clicked.connect(lambda x: self.update_user_list())
-        self.pushButton_4.clicked.connect(lambda x: self.show_admin_menu())
+        if user_data['role'] == 'admin':
+            self.pushButton_4.clicked.connect(lambda x: self.show_admin_menu())
 
         self.update_user_list()
 

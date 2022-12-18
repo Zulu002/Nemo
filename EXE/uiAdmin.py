@@ -1,11 +1,13 @@
+import easygui
+from PyQt6 import QtCore, QtWidgets
 
-
-
-from PyQt6 import QtCore, QtGui, QtWidgets
+import api
+import uiChat
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.MainWindow = MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(505, 244)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -49,20 +51,20 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Авторизоваться"))
+        self.pushButton.setText(_translate("MainWindow", "Создать"))
         self.pushButton_2.setText(_translate("MainWindow", "Назад"))
-        self.label.setText(_translate("MainWindow", "Имя"))
+        self.label.setText(_translate("MainWindow", "Роль"))
         self.label_2.setText(_translate("MainWindow", "Логин"))
         self.label_3.setText(_translate("MainWindow", "Пароль"))
-        self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit_3.text(), self.lineEdit.text(), self.lineEdit_2.text()))
-        self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go("ldfihbp"))
+        self.pushButton.clicked.connect(
+            lambda x: self.createNewUser(self.lineEdit.text(), self.lineEdit_2.text(), self.lineEdit_3.text()))
+        self.pushButton_2.clicked.connect(lambda x: self.backToChat())
 
+    def createNewUser(self, *args):
+        api.API().new_user(args[0], args[1], args[2])
+        easygui.msgbox("Новый пользователь создан в системе!", "Успешно")
 
-class ButtonCommand:
-    def __init__(self):
-        pass
-
-    def push_go(self, *args):
-            print(args)
-
-
+    def backToChat(self):
+        ui = uiChat.Ui_MainWindow()
+        ui.setupUi(self.MainWindow)
+        self.MainWindow.show()
