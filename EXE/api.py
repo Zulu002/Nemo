@@ -1,11 +1,13 @@
 import requests
+
+
 class API:
     def __init__(self):
         self.adr = "http://192.168.1.92:2212"
 
     def auth(self, login, password):
         params = {"login": login, "password": password}
-        result = requests.get(self.adr+'/api/v1/auth/', params=params)
+        result = requests.get(self.adr + '/api/v1/auth/', params=params)
         if result.status_code == 200:
             return result.json()
         return False
@@ -14,4 +16,8 @@ class API:
         return requests.get(self.adr + '/api/v1/answer/').json()
 
     def get_user_message(self, id):
-        return requests.get(self.adr + '/api/v1/answer/'+id).json()
+        return requests.get(self.adr + '/api/v1/answer/' + id).json()
+
+    def send_message_user(self, operator_id: int, user_id: int, msg: str):
+        params = {'operator': operator_id, "id": user_id, 'msg': msg}
+        return requests.post(self.adr + "/api/v1/message/", params=params)

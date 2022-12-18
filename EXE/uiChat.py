@@ -7,11 +7,9 @@ global user_data
 import api
 import threading
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        self.to = None
 
-class Ui_MainWindow(object):
+class Ui_MainWindow:
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("ЯОператор")
         MainWindow.resize(530, 247)
@@ -57,34 +55,37 @@ class Ui_MainWindow(object):
                 _translate("MainWindow", "ЯОператор: Поддержка 1.0 ({0})".format(user_data['login'])))
             self.pushButton.setText(_translate("MainWindow", "Отправить"))
             self.pushButton_2.setText(_translate("MainWindow", "Добавить пользователя "))
-            self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit.text(), self.textBrowser))
-            self.pushButton_2.clicked.connect(lambda x: ButtonCommand().set_user("trtrt"))
+            self.pushButton.clicked.connect(lambda x: self.push_go(self.lineEdit.text()))
+            self.pushButton_2.clicked.connect(lambda x: self.set_user("trtrt"))
 
-            for i in api.API().get_now_answer():
-                self.listWidget.addItem(str(i['id']))
+            self.update_user_list()
+
             self.listWidget.currentRowChanged.connect(self.setToRow)
 
+    def update_user_list(self):
+        for i in api.API().get_now_answer():
+            self.listWidget.addItem(str(i['id']))
     def setToRow(self, alpha):
-            self.to = self.listWidget.item(alpha).text()
-            self.update_chat()
+        self.to = self.listWidget.item(alpha).text()
+        self.update_chat()
 
     def update_chat(self):
-            if self.to is not None:
-                print(self.to)
-                self.textBrowser.clear()
-                data = api.API().get_user_message(self.to)
-                # print(data, '213213213')
-                string_msg = ''
-                for i in data:
-                    string_msg = "({}) {}: {}".format(i["datetime"], i['id'], i['question'])
-                    ButtonCommand().push_go(string_msg, self.textBrowser)
+        if self.to is not None:
+            print(self.to)
+            self.textBrowser.clear()
+            data = api.API().get_user_message(self.to)
+            # print(data, '213213213')
+            string_msg = ''
+            for i in data:
+                how_send = i['operator_id'] if i.get('operator_id') is not None else i['id']
+                string_msg = "({}) {}: {}".format(i["datetime"], how_send, i['question'])
+                self.textBrowser.append(string_msg)
 
-class ButtonCommand:
-    def __init__(self):
-        pass
-
-    def push_go(self, text, wordarea):
-        wordarea.append(text)
+    def push_go(self, text):
+        self.textBrowser.append(text)
+        api.API().send_message_user(user_data['id'], int(self.to), text)
+        self.update_chat()
+        self.lineEdit.clear()
 
     def set_user(self, *args):
         print(args)
