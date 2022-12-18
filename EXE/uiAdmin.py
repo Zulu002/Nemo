@@ -13,6 +13,9 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(170, 160, 161, 28))
         self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setGeometry(QtCore.QRect(10, 160, 161, 28))
+        self.pushButton_2.setObjectName("pushButton")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(30, 80, 441, 21))
         self.lineEdit.setObjectName("lineEdit")
@@ -47,10 +50,12 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "Авторизоваться"))
+        self.pushButton_2.setText(_translate("MainWindow", "Назад"))
         self.label.setText(_translate("MainWindow", "Имя"))
         self.label_2.setText(_translate("MainWindow", "Логин"))
         self.label_3.setText(_translate("MainWindow", "Пароль"))
         self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go(self.lineEdit_3.text(), self.lineEdit.text(), self.lineEdit_2.text()))
+        self.pushButton.clicked.connect(lambda x: ButtonCommand().push_go("ldfihbp"))
 
 
 class ButtonCommand:
@@ -61,12 +66,3 @@ class ButtonCommand:
             print(args)
 
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec())

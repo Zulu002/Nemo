@@ -3,12 +3,13 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 global user_data
 import api
 import threading
-
+import uiAdmin
 
 class Ui_MainWindow:
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("ЯОператор")
-        MainWindow.resize(534, 316)
+        self.MainWin = MainWindow
+        self.MainWin.setObjectName("ЯОператор")
+        self.MainWin.resize(534, 316)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -64,21 +65,34 @@ class Ui_MainWindow:
         self.pushButton_3.setText(_translate("MainWindow", "обновить пользователей"))
         self.pushButton_4.setText(_translate("MainWindow", "добавить пользователей"))
         self.pushButton.clicked.connect(lambda x: self.push_go(self.lineEdit.text()))
-        self.pushButton_2.clicked.connect(lambda x: self.set_user("trtrt"))
-        self.pushButton.clicked.connect(lambda x: self.push_go(self.lineEdit.text()))
-        self.pushButton_2.clicked.connect(lambda x: self.set_user("trtrt"))
+        self.pushButton_2.clicked.connect(lambda x: self.close_quest())
+        self.pushButton_3.clicked.connect(lambda x: self.update_user_list())
+        self.pushButton_4.clicked.connect(lambda x: self.show_admin_menu())
 
         self.update_user_list()
 
         self.listWidget.currentRowChanged.connect(self.setToRow)
 
+    def close_quest(self):
+        api.API().close_quest(self.to)
+        self.update_user_list()
+
     def update_user_list(self):
+        self.listWidget.clear()
         for i in api.API().get_now_answer():
             self.listWidget.addItem(str(i['id']))
 
+    def show_admin_menu(self):
+
+        ui = uiAdmin.Ui_MainWindow()
+        ui.setupUi(self.MainWin)
+        self.MainWin.show()
+
+
     def setToRow(self, alpha):
-        self.to = self.listWidget.item(alpha).text()
-        self.update_chat()
+        if self.listWidget.item(alpha) is not None:
+            self.to = self.listWidget.item(alpha).text()
+            self.update_chat()
 
     def update_chat(self):
         if self.to is not None:

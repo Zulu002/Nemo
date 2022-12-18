@@ -21,3 +21,6 @@ class API:
     def send_message_user(self, operator_id: int, user_id: int, msg: str):
         params = {'operator': operator_id, "id": user_id, 'msg': msg}
         return requests.post(self.adr + "/api/v1/message/", params=params)
+
+    def close_quest(self, user_id: str):
+        return requests.put(self.adr + "/api/v1/answer/"+str(user_id))
