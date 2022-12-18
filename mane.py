@@ -33,10 +33,9 @@ class UserState(StatesGroup):
 
 @dp.message_handler(commands=["start"])
 async def start_message(message: types.Message):
-    inline_btn_hello = InlineKeyboardButton('Привет 👋', callback_data='button1')
     inline_btn_reg = InlineKeyboardButton("Регистрация", callback_data="button2")
     inline_btn_qst = InlineKeyboardButton("Оставить вопрос", callback_data="button3")
-    inline_kb1 = InlineKeyboardMarkup().add(inline_btn_hello, inline_btn_reg, inline_btn_qst)
+    inline_kb1 = InlineKeyboardMarkup().add(inline_btn_reg, inline_btn_qst)
     await message.reply("Привет, пиши мне свои сообщения!Я с радостью на них отвечу.\n"
                         "Так же ты можешь зарегистрироваться.", reply_markup=inline_kb1)
 
@@ -44,9 +43,9 @@ async def start_message(message: types.Message):
 @dp.message_handler(commands=["help"])
 async def help_message(message: types.Message):
     await message.reply("Перечень команд для твоей помощи...\n"
-                        "/start - Начало бота. Приветствие. 1️⃣\n"
-                        "/help - помощь по командам. 2️⃣\n"
-                        "/communicaton - общение с оператором. 3️⃣\n")
+                        "1️⃣ /start - Запуск бота \n"
+                        "2️⃣ /help - помощь по командам. \n"
+                        "3️⃣ /communicaton - общение с оператором. \n")
 
 
 @dp.message_handler(commands=["communication"])
@@ -54,11 +53,6 @@ async def mes_communication(message: types.Message):
     button_moder = KeyboardButton("Помощь оператора")
     all_button = ReplyKeyboardMarkup(resize_keyboard=True).add(button_moder)
     await message.reply("Режим общения включен.", reply_markup=all_button)
-
-
-@dp.callback_query_handler(lambda c: c.data == 'button1')
-async def process_callback_button1(callback_query: types.CallbackQuery):
-    await chatbot.send_message(callback_query.from_user.id, 'Привет 👋')
 
 
 @dp.callback_query_handler(lambda c: c.data == 'button3')
