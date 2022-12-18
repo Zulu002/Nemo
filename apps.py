@@ -23,17 +23,17 @@ class Db:
         )
         return True
 
-    def insert_members(self, id, password, role):
+    def insert_members(self, login, password, role):
         self.cur.execute(
-            """INSERT INTO members (id, password, role) VALUES (%s, %s, %s);""",
-            (id, password, role,)
+            """INSERT INTO members (login, password, role) VALUES (%s, %s, %s);""",
+            (login, password, role,)
         )
         return True
 
-    def insert_message(self, id_user, platform: str, status) -> bool:
+    def insert_message(self, id, question, datetime):
         self.cur.execute(
-            """INSERT INTO message (id, question, datetime, status) VALUES (%s, %s, %s, %s);""",
-            (id, question, datetime, status)
+            """INSERT INTO message (id, question, datetime) VALUES (%s, %s, %s);""",
+            (id, question, datetime)
         )
         return True
 
@@ -87,6 +87,7 @@ class Db:
         )
         return self.cur.fetchall()
 
+
     def select_all_members(self):
         self.cur.execute(
             """SELECT * FROM members"""
@@ -104,3 +105,18 @@ class Db:
             """SELECT * FROM message_from_members"""
         )
         return self.cur.fetchall()
+
+
+    def select_member(self, login, password):
+        self.cur.execute("SELECT login FROM members WHERE login = %s AND password = %s", (login, password))
+        if self.cur.fetchone() is None:
+            return False
+        else:
+            return True
+
+
+    def update_close_quest(self, user_id):
+        self.cur.execute(
+            """UPDATE public.message SET status=true WHERE id=%s""", (str(user_id),)
+        )
+        return True

@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(400, 300)
+        Dialog.resize(370, 400)
         self.Login = QtWidgets.QDialogButtonBox(Dialog)
         self.Login.setGeometry(QtCore.QRect(-50, 240, 341, 32))
         self.Login.setOrientation(QtCore.Qt.Orientation.Horizontal)
