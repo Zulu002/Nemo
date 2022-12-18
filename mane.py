@@ -105,6 +105,7 @@ async def answer_qst(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Помощь оператора")
 async def mes_text(message: types.Message):
     await message.reply("Сейчас к вам подключится оператор.\nОжидайте.....")
+    apps.Db().insert_message(message.from_user.id, message.text, datetime.datetime.now(), "Telegram")
 
 
 @dp.message_handler(lambda message: message.text)
