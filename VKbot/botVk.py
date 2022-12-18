@@ -13,7 +13,6 @@ bh = vk_api.VkApi(token=token)
 give = bh.get_api()
 longpoll = VkLongPoll(bh)
 
-
 # Создадим функцию для ответа на сообщения в лс группы
 def blasthack(id, text):
     bh.method('messages.send', {'user_id': id, 'message': text, 'random_id': 0})
